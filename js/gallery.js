@@ -101,7 +101,7 @@ function renderImages(images) {
 
     function makeBigImage(event) {
       if (event.target.dataset.source) {
-        const imageOriginal = event.target.dataset.source;
+        const imageOriginal = event.currentTarget.dataset.source;
         lightbox = basiclightbox.create(`<img src="${imageOriginal}">`);
         lightbox.show();
         document.addEventListener("keydown", handleKeyPress);
