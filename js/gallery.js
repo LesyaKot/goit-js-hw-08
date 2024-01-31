@@ -1,5 +1,3 @@
-"use strict";
-
 const images = [
   {
     preview:
@@ -66,111 +64,40 @@ const images = [
   },
 ];
 
+const gallery = document.querySelector(".gallery");
+
+let lightbox = null;
 
 function renderImages(images) {
-    let html = "";
-  
-    for (let image of images) {
-      html += `<li class="gallery-item">
-            <a class="gallery-link" href="${image.original}">
-              <img
-                class="gallery-image"
-                src="${image.preview}"
-                data-source="${image.original}"
-                alt="${image.description}"
-              />
-            </a>
-          </li>`;
-    }
-  
-    const gallery = document.querySelector(".gallery");
-    gallery.insertAdjacentHTML("beforeend", html);
-  
-    const galleryLinks = document.querySelectorAll(".gallery");
-    galleryLinks.forEach((link) => {
-      link.addEventListener("click", noLinkLoad);
-    });
-  
-    function noLinkLoad(event) {
-      event.preventDefault();
-    }
-  
-    gallery.addEventListener("click", makeBigImage);
-  
-    let lightbox = null;
+  return images
+    .map(
+      (item) =>
+        `<li class="gallery-item">
+        <a class="gallery-link" href="${item.original}">
+          <img
+            class="gallery-image"
+            src="${item.preview}"
+            data-source="${item.original}"
+            alt="${item.description}"
+          />
+        </a>
+      </li>`
+    )
+    .join("");
+}
 
-    function makeBigImage(event) {
-      if (event.target.dataset.source) {
-        const imageOriginal = event.currentTarget.dataset.source;
-        lightbox = basiclightbox.create(`<img src="${imageOriginal}">`);
-        lightbox.show();
-        document.addEventListener("keydown", handleKeyPress);
-      }
-    }
-    function handleKeyPress(event) {
-        if (event.key === "Escape" && lightbox) {
-          lightbox.close();
-          lightbox = null;
-          document.removeEventListener("keydown", handleKeyPress);
-        }
-      }
-    
-    };
+gallery.insertAdjacentHTML("beforeend", renderImages(images));
 
-  
-  renderImages(images);
+gallery.addEventListener("click", onclick);
 
+function onclick(event) {
+  event.preventDefault();
 
+  if (event.target.tagName !== "IMG") return;
+  const imageOriginal = event.currentTarget.dataset.source;
 
-
-
-// function renderImages(images) {
-//   let html = "";
-
-//   for (let image of images) {
-//     html += `<li class="gallery-item">
-//           <a class="gallery-link" href="${image.original}">
-//             <img
-//               class="gallery-image"
-//               src="${image.preview}"
-//               data-source="${image.original}"
-//               alt="${image.description}"
-//             />
-//           </a>
-//         </li>`;
-//   }
-
-//   const gallery = document.querySelector(".gallery");
-//   gallery.insertAdjacentHTML("beforeend", html);
-
-//   const galleryLinks = document.querySelectorAll(".gallery-link");
-//   galleryLinks.forEach((link) => {
-//     link.addEventListener("click", noLinkLoad);
-//   });
-//   function noLinkLoad(event) {
-//     event.preventDefault();
-//   }
-
-//   gallery.addEventListener("click", makeBigImage);
-// function makeBigImage(event) {
-//     if (event.target.dataset.source) {
-//         console.log(event.target.dataset.source);
-//    }
-// }
-
-// const items = gallery.querySelectorAll('.gallery-item');
-
-// items.forEach((item) =>{
-//     item.addEventListener('click', (event) =>{
-//         const id = event.target.dataset.source;
-//         console.log(id);
-
-//         // let info = gallery.find(item => item.id === id);
-//         // console.log(info);
-
-//         basiclightbox.create('<div class="modal"><img src="${image.original}"></div>').show();
-//     })
-// })
-
-//  }
-// renderImages(images);
+    lightbox = basiclightbox.create(
+    `<img src="${imageOriginal}" alt="${event.target.alt}">`
+  );
+  lightbox.show();
+}
