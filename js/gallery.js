@@ -94,10 +94,18 @@ function onclick(event) {
   event.preventDefault();
 
   if (event.target.tagName !== "IMG") return;
-  const imageOriginal = event.currentTarget.dataset.source;
 
-    lightbox = basiclightbox.create(
+  const imageOriginal = event.target.dataset.source;
+
+  lightbox = basicLightbox.create(
     `<img src="${imageOriginal}" alt="${event.target.alt}">`
   );
   lightbox.show();
+
+  document.addEventListener("keyup", ({ code }) => {
+    if (code !== "Escape") {
+      return;
+    }
+    lightbox.close();
+  });
 }
