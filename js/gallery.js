@@ -68,6 +68,8 @@ const gallery = document.querySelector(".gallery");
 
 let lightbox = null;
 
+let escapeListener = null;
+
 function renderImages(images) {
   return images
     .map(
@@ -102,10 +104,23 @@ function onclick(event) {
   );
   lightbox.show();
 
-  document.addEventListener("keyup", ({ code }) => {
-    if (code !== "Escape") {
-      return;
+  escapeListener = ({ code }) => {
+    if (code === "Escape") {
+      lightbox.close();
     }
-    lightbox.close();
+  };
+
+  document.addEventListener("keyup", escapeListener);
+
+  lightbox.onClose(() => {
+    document.removeEventListener("keyup", escapeListener);
+    escapeListener = null;
   });
+
+  // document.addEventListener("keyup", ({ code }) => {
+  //   if (code !== "Escape") {
+  //     return;
+  //   }
+  //   lightbox.close();
+  // });
 }
