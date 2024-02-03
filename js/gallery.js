@@ -104,23 +104,60 @@ function onclick(event) {
   );
   lightbox.show();
 
-  escapeListener = ({ code }) => {
-    if (code === "Escape") {
-      lightbox.close();
+  document.addEventListener("keyup", ({ code }) => {
+    if (code !== "Escape") {
+      return;
     }
-  };
-
-  document.addEventListener("keyup", escapeListener);
-
-  lightbox.onClose(() => {
-    document.removeEventListener("keyup", escapeListener);
-    escapeListener = null;
+    lightbox.close();
   });
-
-  // document.addEventListener("keyup", ({ code }) => {
-  //   if (code !== "Escape") {
-  //     return;
-  //   }
-  //   lightbox.close();
-  // });
 }
+
+
+  // lightbox = basicLightbox.create(
+  //   `<img src="${imageOriginal}" alt="${event.target.alt}">`
+  // );
+  // lightbox.show();
+
+  // escapeListener = ({ code }) => {
+  //   if (code === "Escape") {
+  //     lightbox.close();
+  //   }
+  // };
+
+  // document.addEventListener("keyup", escapeListener);
+
+  // lightbox.onClose(() => {
+  //   document.removeEventListener("keyup", escapeListener);
+  //   escapeListener = null;
+  // });
+
+  
+  // lightbox = basicLightbox.create(
+  //   `<img src="${imageOriginal}" alt="${event.target.alt}">`, {
+  //     onShow: (lightbox) => {
+  //       escapeListener = (event) => {
+  //         if (event.code === "Escape") {
+  //           lightbox.close();
+  //         }
+  //       };
+  
+  //       document.addEventListener("keyup", escapeListener);
+  //     },
+  //     onClose: (lightbox) => {
+  //       document.removeEventListener('keyup', escapeListener);
+  //     }
+  //   }
+  // );
+
+ 
+
+  // lightbox = basicLightbox.create(
+  //   `<img src="${imageOriginal}" alt="${event.target.alt}">`, {
+  //     onShow: (instance) => {
+  //       document.addEventListener("keyup", escapeListener);
+  //     },
+  //     onClose: (instance) => {
+  //       document.removeEventListener('keyup', escapeListener);
+  //       escapeListener = null;
+  //     }
+  //   });
