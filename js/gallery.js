@@ -90,9 +90,9 @@ function renderImages(images) {
 
 gallery.insertAdjacentHTML("beforeend", renderImages(images));
 
-gallery.addEventListener("click", onclick);
+gallery.addEventListener("click", handleGalleryClick);
 
-function onclick(event) {
+function handleGalleryClick(event) {
   event.preventDefault();
 
   if (event.target.tagName !== "IMG") return;
@@ -100,7 +100,15 @@ function onclick(event) {
   const imageOriginal = event.target.dataset.source;
 
   lightbox = basicLightbox.create(
-    `<img src="${imageOriginal}" alt="${event.target.alt}">`
+    `<img src="${imageOriginal}" alt="${event.target.alt}">`,
+    {
+      onShow: () => {
+        document.addEventListener("keyup", escapeListener);
+      },
+      onClose: () => {
+        document.removeEventListener("keyup", escapeListener);
+      },
+    }
   );
   lightbox.show();
 
@@ -111,53 +119,3 @@ function onclick(event) {
     lightbox.close();
   });
 }
-
-
-  // lightbox = basicLightbox.create(
-  //   `<img src="${imageOriginal}" alt="${event.target.alt}">`
-  // );
-  // lightbox.show();
-
-  // escapeListener = ({ code }) => {
-  //   if (code === "Escape") {
-  //     lightbox.close();
-  //   }
-  // };
-
-  // document.addEventListener("keyup", escapeListener);
-
-  // lightbox.onClose(() => {
-  //   document.removeEventListener("keyup", escapeListener);
-  //   escapeListener = null;
-  // });
-
-  
-  // lightbox = basicLightbox.create(
-  //   `<img src="${imageOriginal}" alt="${event.target.alt}">`, {
-  //     onShow: (lightbox) => {
-  //       escapeListener = (event) => {
-  //         if (event.code === "Escape") {
-  //           lightbox.close();
-  //         }
-  //       };
-  
-  //       document.addEventListener("keyup", escapeListener);
-  //     },
-  //     onClose: (lightbox) => {
-  //       document.removeEventListener('keyup', escapeListener);
-  //     }
-  //   }
-  // );
-
- 
-
-  // lightbox = basicLightbox.create(
-  //   `<img src="${imageOriginal}" alt="${event.target.alt}">`, {
-  //     onShow: (instance) => {
-  //       document.addEventListener("keyup", escapeListener);
-  //     },
-  //     onClose: (instance) => {
-  //       document.removeEventListener('keyup', escapeListener);
-  //       escapeListener = null;
-  //     }
-  //   });
